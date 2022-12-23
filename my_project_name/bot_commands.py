@@ -1,8 +1,8 @@
 from nio import AsyncClient, MatrixRoom, RoomMessageText
 
-from my_project_name.chat_functions import react_to_event, send_text_to_room
-from my_project_name.config import Config
-from my_project_name.storage import Storage
+from chat_functions import react_to_event, send_text_to_room
+from config import Config
+from storage import Storage
 
 
 class Command:
@@ -46,12 +46,10 @@ class Command:
             await self._react()
         elif self.command.startswith("help"):
             await self._show_help()
-        else:
-            await self._unknown_command()
 
     async def _echo(self):
         """Echo back the command's arguments"""
-        response = " ".join(self.args)
+        response = " ".join(self.args) + " some extra"
         await send_text_to_room(self.client, self.room.room_id, response)
 
     async def _react(self):

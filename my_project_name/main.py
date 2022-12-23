@@ -11,14 +11,15 @@ from nio import (
     InviteMemberEvent,
     LocalProtocolError,
     LoginError,
+    KeyVerificationEvent,
     MegolmEvent,
     RoomMessageText,
     UnknownEvent,
 )
 
-from my_project_name.callbacks import Callbacks
-from my_project_name.config import Config
-from my_project_name.storage import Storage
+from callbacks import Callbacks
+from config import Config
+from storage import Storage
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +68,7 @@ async def main():
         callbacks.invite_event_filtered_callback, (InviteMemberEvent,)
     )
     client.add_event_callback(callbacks.decryption_failure, (MegolmEvent,))
+    client.add_to_device_callback(callbacks.to_device_callback, (KeyVerificationEvent,))
     client.add_event_callback(callbacks.unknown, (UnknownEvent,))
 
     # Keep trying to reconnect on failure (with some time in-between)
